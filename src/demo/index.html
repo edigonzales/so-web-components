@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>so-header demo</title>
+  <link rel="stylesheet" href="../styles/reset.css">
+  <link rel="stylesheet" href="../styles/fonts.css">
+  <link rel="stylesheet" href="../styles/tokens.css">
+  <script type="module" src="../index.js"></script>
+  <style>
+    body{ background: var(--so-bg); color: var(--so-fg); font-family: var(--so-font-family); }
+    main{ padding: 2rem 0; }
+    .so-container{ max-width: var(--so-container-size-full); margin-inline:auto; padding-inline: var(--so-container-padding); }
+    .hero{
+      height: 260px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(0,0,0,0.08), rgba(0,0,0,0.02));
+      border: 1px solid rgba(0,0,0,0.08);
+      display:flex;
+      align-items:flex-end;
+      padding: 1.25rem;
+      font-size: clamp(1.5rem, 3.5vw, 3rem);
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+  <so-header></so-header>
+
+  <main>
+    <div class="so-container">
+      <div class="hero">Willkommen beim Kanton Solothurn</div>
+    </div>
+  </main>
+
+  <script type="module">
+    const header = document.querySelector("so-header");
+    header?.addEventListener("so-search", () => alert("Search clicked"));
+    header?.addEventListener("so-section-select", (e) => console.log("section select", e.detail));
+  </script>
+</body>
+</html>
