@@ -316,11 +316,17 @@ export class SoHeader extends HTMLElement {
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
+        line-height: 1;
+      }
+      .topnav a span{
+        line-height: 1;
       }
       .topnav .icon{
         width: 1.25rem;
         height: 1.25rem;
         fill: currentColor;
+        display: block;
+        align-self: center;
       }
       .topnav a:hover{ color: rgb(204, 0, 0); }
 
