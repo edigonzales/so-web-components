@@ -267,6 +267,8 @@ export class SoHeader extends HTMLElement {
         background: var(--so-bg, #fff);
         color: var(--so-fg, rgb(47, 72, 88));
         border-bottom: 1px solid rgba(0,0,0,0.08);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale; /* mac Firefox */
       }
 
       .so-container{
@@ -344,8 +346,7 @@ export class SoHeader extends HTMLElement {
       /* Second row */
       .secondbar{
         width: 100%;
-        border-top: 1px solid rgba(0,0,0,0.06);
-        padding-block: 0.9rem;
+        margin-block: 0.5rem;
       }
       .sectionnav ul{
         list-style: none;
@@ -362,7 +363,12 @@ export class SoHeader extends HTMLElement {
         letter-spacing: -0.01em;
         color: var(--so-fg, rgb(47, 72, 88));
       }
-      .sectionnav a:hover{ color: rgb(204, 0, 0); }
+      .sectionnav a:hover{
+        color: rgb(204, 0, 0);
+        text-decoration: underline;
+        text-decoration-color: rgb(204, 0, 0);
+        text-underline-offset: 0.2em;
+      }
 
       /* Responsive: hide links + show menu */
       @media (max-width: 992px){
