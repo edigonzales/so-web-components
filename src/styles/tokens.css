@@ -1,7 +1,7 @@
 :root{
   /* Colors (requested) */
-  --so-bg: #§;
-  --so-fg: #333;
+  --so-bg: #fff;
+  --so-fg: rgb(47, 72, 88);
 
   /* Typography (requested) */
   --so-font-family: Frutiger, sans-serif;

@@ -1,29 +1,22 @@
-import { JSDOM } from "jsdom";
-
-function installDom(): void {
-  const dom = new JSDOM(`<!doctype html><html><body></body></html>`, { url: "http://localhost/" });
-  (globalThis as unknown as { window: Window }).window = dom.window as unknown as Window;
-  (globalThis as unknown as { document: Document }).document = dom.window.document;
-  (globalThis as unknown as { HTMLElement: typeof HTMLElement }).HTMLElement = dom.window.HTMLElement;
-  (globalThis as unknown as { customElements: CustomElementRegistry }).customElements = dom.window.customElements;
-  (globalThis as unknown as { CustomEvent: typeof CustomEvent }).CustomEvent = dom.window.CustomEvent;
-}
-
 describe("so-header", () => {
-  beforeEach(async () => {
-    installDom();
-    await import("../dist/index.js");
+  beforeAll(async () => {
+    // @ts-expect-error dist output is generated before tests run.
+    await import("../../dist/index.js");
   });
 
-  test("renders svg logo + search form + section nav", () => {
+  beforeEach(() => {
+    document.body.innerHTML = "";
+  });
+
+  test("renders svg logo + section nav without search form", () => {
     const el = document.createElement("so-header");
     document.body.appendChild(el);
 
     const shadow = (el as HTMLElement).shadowRoot!;
     expect(shadow.querySelector("svg#logo")).not.toBeNull();
-    expect(shadow.querySelector("form.search input[type='search']")).not.toBeNull();
+    expect(shadow.querySelector("form.search")).toBeNull();
 
-    const sectionLinks = [...shadow.querySelectorAll(".sectionnav a")].map(a => a.textContent?.trim());
+    const sectionLinks = Array.from(shadow.querySelectorAll(".sectionnav a")).map(a => a.textContent?.trim());
     expect(sectionLinks).toEqual(expect.arrayContaining(["Services", "Verwaltung"]));
   });
 
@@ -34,9 +27,9 @@ describe("so-header", () => {
     document.body.appendChild(el);
 
     const shadow = (el as HTMLElement).shadowRoot!;
-    const topLinks = [...shadow.querySelectorAll(".topnav a")].map(a => a.textContent?.trim());
+    const topLinks = Array.from(shadow.querySelectorAll(".topnav a")).map(a => a.textContent?.trim());
     expect(topLinks).toEqual(["Foo"]);
-    const sectionLinks = [...shadow.querySelectorAll(".sectionnav a")].map(a => a.textContent?.trim());
+    const sectionLinks = Array.from(shadow.querySelectorAll(".sectionnav a")).map(a => a.textContent?.trim());
     expect(sectionLinks).toEqual(["Bar"]);
   });
 
@@ -54,5 +47,16 @@ describe("so-header", () => {
     btn.click();
     expect(btn.getAttribute("aria-expanded")).toBe("true");
     expect(panel.getAttribute("data-open")).toBe("true");
+  });
+
+  test("styles set default colors and hover red", () => {
+    const el = document.createElement("so-header");
+    document.body.appendChild(el);
+
+    const shadow = (el as HTMLElement).shadowRoot!;
+    const style = shadow.querySelector("style")?.textContent ?? "";
+    expect(style).toContain("background: var(--so-bg, #fff)");
+    expect(style).toContain("color: var(--so-fg, rgb(47, 72, 88))");
+    expect(style).toContain("color: rgb(204, 0, 0)");
   });
 });
