@@ -353,7 +353,6 @@ export class SoHeader extends HTMLElement {
       /* Second row */
       .secondbar{
         width: 100%;
-        border-bottom: 1px solid rgba(0,0,0,0.08);
         margin-block: 0.4rem;
       }
       .sectionnav ul{
@@ -363,6 +362,7 @@ export class SoHeader extends HTMLElement {
         margin: 0;
         padding: 0;
         align-items: baseline;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
       }
       .sectionnav a{
         text-decoration: none;
@@ -371,7 +371,7 @@ export class SoHeader extends HTMLElement {
         letter-spacing: -0.01em;
         color: var(--so-fg, rgb(47, 72, 88));
         padding-bottom: 0.45rem;
-        border-bottom: 2px solid transparent;
+        border-bottom: 1px solid transparent;
         margin-bottom: -1px;
       }
       .sectionnav a:hover{
