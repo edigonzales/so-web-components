@@ -20,7 +20,7 @@
   --so-space-12: 3rem;
 
   /* Container system inspired by so.ch pattern */
-  --so-container-padding: var(--so-space-4);
+  --so-container-padding: var(--so-space-6);
   --so-container-size-small: 57rem;     /* ~912px */
   --so-container-size-medium: 86.25rem; /* ~1380px */
   --so-container-size-full: 120rem;     /* ~1920px */

@@ -275,7 +275,7 @@ export class SoHeader extends HTMLElement {
         width: 100%;
         max-width: var(--so-container-size, var(--so-container-size-full, 120rem));
         margin-inline: auto;
-        padding-inline: var(--so-container-padding, 1rem);
+        padding-inline: var(--so-container-padding, var(--so-space-6, 1.5rem));
         box-sizing: border-box;
       }
 
