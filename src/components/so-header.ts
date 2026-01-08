@@ -164,7 +164,14 @@ export class SoHeader extends HTMLElement {
       const li = el("li");
       const a = el("a") as HTMLAnchorElement;
       a.href = item.href;
-      a.textContent = item.label;
+      if (item.label === "my.so.ch") {
+        const label = el("span");
+        label.textContent = item.label;
+        a.append(label);
+        a.insertAdjacentHTML("beforeend", ` <svg class="icon" viewBox="0 0 24 24"><title>my.so.ch</title><use href="/_assets/c8d0967b4988991174d5ef9b73cf6001/dist/Sprite.svg#icons--profile-circled"></use></svg>`);
+      } else {
+        a.textContent = item.label;
+      }
       li.appendChild(a);
       ul.appendChild(li);
     }
@@ -294,7 +301,7 @@ export class SoHeader extends HTMLElement {
       .topnav ul{
         list-style: none;
         display: flex;
-        gap: 1.25rem;
+        gap: 2.5rem;
         margin: 0;
         padding: 0;
         align-items: center;
@@ -304,6 +311,14 @@ export class SoHeader extends HTMLElement {
         text-decoration: none;
         font-weight: 900;
         color: var(--so-fg, rgb(47, 72, 88));
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .topnav .icon{
+        width: 1.25rem;
+        height: 1.25rem;
+        fill: currentColor;
       }
       .topnav a:hover{ color: rgb(204, 0, 0); }
 
@@ -343,7 +358,7 @@ export class SoHeader extends HTMLElement {
       .sectionnav a{
         text-decoration: none;
         font-weight: 900;
-        font-size: 1.75rem;
+        font-size: 1.5rem;
         letter-spacing: -0.01em;
         color: var(--so-fg, rgb(47, 72, 88));
       }
@@ -351,7 +366,7 @@ export class SoHeader extends HTMLElement {
 
       /* Responsive: hide links + show menu */
       @media (max-width: 992px){
-        .topnav ul{ gap: 1rem; }
+        .topnav ul{ gap: 2rem; }
       }
       @media (max-width: 768px){
         .topnav{ display: none; }

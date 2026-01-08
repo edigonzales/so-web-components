@@ -22,13 +22,20 @@ describe("so-header", () => {
 
   test("accepts JSON nav via attributes", () => {
     const el = document.createElement("so-header");
-    el.setAttribute("top-nav", JSON.stringify([{ label: "Foo", href: "/foo" }]));
+    el.setAttribute("top-nav", JSON.stringify([
+      { label: "Foo", href: "/foo" },
+      { label: "my.so.ch", href: "/my" }
+    ]));
     el.setAttribute("section-nav", JSON.stringify([{ label: "Bar", href: "/bar" }]));
     document.body.appendChild(el);
 
     const shadow = (el as HTMLElement).shadowRoot!;
-    const topLinks = Array.from(shadow.querySelectorAll(".topnav a")).map(a => a.textContent?.trim());
-    expect(topLinks).toEqual(["Foo"]);
+    const topLinks = Array.from(shadow.querySelectorAll(".topnav a")).map((a) => {
+      const label = a.querySelector("span")?.textContent?.trim();
+      return label ?? a.textContent?.trim();
+    });
+    expect(topLinks).toEqual(["Foo", "my.so.ch"]);
+    expect(shadow.querySelector(".topnav a .icon")).not.toBeNull();
     const sectionLinks = Array.from(shadow.querySelectorAll(".sectionnav a")).map(a => a.textContent?.trim());
     expect(sectionLinks).toEqual(["Bar"]);
   });
