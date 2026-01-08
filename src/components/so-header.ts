@@ -327,6 +327,7 @@ export class SoHeader extends HTMLElement {
         fill: currentColor;
         display: block;
         align-self: center;
+        transform: translateY(1px);
       }
       .topnav a:hover{ color: rgb(204, 0, 0); }
 
