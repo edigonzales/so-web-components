@@ -322,12 +322,12 @@ export class SoHeader extends HTMLElement {
         line-height: 1;
       }
       .topnav .icon{
-        width: 1.25rem;
-        height: 1.25rem;
+        width: 1.5rem;
+        height: 1.5rem;
         fill: currentColor;
         display: block;
         align-self: center;
-        transform: translateY(1px);
+        transform: translateY(-2px);
       }
       .topnav a:hover{ color: rgb(204, 0, 0); }
 
@@ -376,7 +376,10 @@ export class SoHeader extends HTMLElement {
       }
       .sectionnav a:hover{
         color: rgb(204, 0, 0);
-        border-bottom-color: rgb(204, 0, 0);
+      }
+      .sectionnav a[aria-current="page"]{
+        color: rgb(204, 0, 0);
+        border-bottom: 1px solid rgb(204, 0, 0);
       }
 
       /* Responsive: hide links + show menu */
