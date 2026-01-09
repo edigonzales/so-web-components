@@ -6,8 +6,8 @@ abgeleitet aus dem Layout-Prinzip von so.ch.
 ## Enthalten
 
 - `src/styles/tokens.css` – Farben/Typografie/Container-Tokens  
-  - Hintergrund: `#fafafa`  
-  - Schriftfarbe: `#333`  
+  - Hintergrund: `#fff`  
+  - Schriftfarbe: `rgb(47, 72, 88)`  
   - Schrift: `Frutiger, sans-serif`
 - `src/components/so-header.ts` – `<so-header>` Web Component (Shadow DOM)
 - `src/demo/index.html` – Demo-Seite
@@ -93,7 +93,6 @@ Dann im Browser öffnen:
 
 ## Events
 
-- `so-search` → wird ausgelöst, wenn das Such-Icon geklickt wird
 - `so-section-select` → wird ausgelöst, wenn ein Bereich (Services/Verwaltung) geklickt wird  
   `detail: { label, href }`
 
@@ -103,8 +102,8 @@ Einfach per CSS Custom Properties:
 
 ```css
 :root{
-  --so-bg: #fafafa;
-  --so-fg: #333;
+  --so-bg: #fff;
+  --so-fg: rgb(47, 72, 88);
 
   /* z.B. Contentbreite/Gutters anpassen */
   --so-container-size-full: 120rem;

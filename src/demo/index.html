@@ -21,7 +21,7 @@
       align-items:flex-end;
       padding: 1.25rem;
       font-size: clamp(1.5rem, 3.5vw, 3rem);
-      font-weight: 800;
+      font-weight: 900;
     }
   </style>
 </head>
@@ -36,7 +36,6 @@
 
   <script type="module">
     const header = document.querySelector("so-header");
-    header?.addEventListener("so-search", () => alert("Search clicked"));
     header?.addEventListener("so-section-select", (e) => console.log("section select", e.detail));
   </script>
 </body>

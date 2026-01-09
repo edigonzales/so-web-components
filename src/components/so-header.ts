@@ -65,7 +65,7 @@ const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" id="logo" viewBox="0 0
 </svg>`;
 
 export class SoHeader extends HTMLElement {
-  static observedAttributes = ["top-nav", "section-nav", "active-section", "logo-href", "site-name", "search-placeholder"];
+  static observedAttributes = ["top-nav", "section-nav", "active-section", "logo-href", "site-name"];
 
   private root: ShadowRoot;
   private topNav: NavItem[] = DEFAULT_TOP_NAV;
@@ -73,7 +73,6 @@ export class SoHeader extends HTMLElement {
   private activeSection = "Services";
   private logoHref = "/";
   private siteName = "Kanton Solothurn";
-  private searchPlaceholder = "Suchen";
 
   constructor() {
     super();
@@ -99,7 +98,6 @@ export class SoHeader extends HTMLElement {
     this.activeSection = this.getAttribute("active-section") ?? this.activeSection;
     this.logoHref = this.getAttribute("logo-href") ?? this.logoHref;
     this.siteName = this.getAttribute("site-name") ?? this.siteName;
-    this.searchPlaceholder = this.getAttribute("search-placeholder") ?? this.searchPlaceholder;
   }
 
   private bindEvents(): void {
@@ -110,26 +108,6 @@ export class SoHeader extends HTMLElement {
 
       const action = btn.dataset.action;
       if (action === "toggle-menu") this.toggleMobileMenu();
-      if (action === "search") {
-        const input = this.root.querySelector<HTMLInputElement>("input[type='search']");
-        this.dispatchEvent(new CustomEvent("so-search", {
-          detail: { query: input?.value ?? "" },
-          bubbles: true,
-          composed: true
-        }));
-      }
-    });
-
-    this.root.addEventListener("submit", (e) => {
-      const form = e.target as HTMLFormElement | null;
-      if (!form || !form.matches("form.search")) return;
-      e.preventDefault();
-      const input = form.querySelector<HTMLInputElement>("input[type='search']");
-      this.dispatchEvent(new CustomEvent("so-search", {
-        detail: { query: input?.value ?? "" },
-        bubbles: true,
-        composed: true
-      }));
     });
 
     this.root.addEventListener("click", (e) => {
@@ -145,7 +123,7 @@ export class SoHeader extends HTMLElement {
   }
 
   private toggleMobileMenu(): void {
-    const panel = this.root.querySelector<HTMLDivElement>(".mobile-panel");
+    const panel = this.root.querySelector<HTMLDivElement>(".mobile-panel-inner");
     const btn = this.root.querySelector<HTMLButtonElement>('button[data-action="toggle-menu"]');
     if (!panel || !btn) return;
 
@@ -177,17 +155,6 @@ export class SoHeader extends HTMLElement {
     logoLink.innerHTML = LOGO_SVG;
     left.appendChild(logoLink);
 
-    const mid = el("div", "mid");
-    const form = el("form", "search") as HTMLFormElement;
-    form.setAttribute("role", "search");
-    form.innerHTML = `
-      <input type="search" name="q" placeholder="${escapeHtml(this.searchPlaceholder)}" aria-label="Suche" />
-      <button type="submit" class="search-btn" data-action="search" aria-label="Suche starten">
-        ${searchIcon()}
-      </button>
-    `;
-    mid.appendChild(form);
-
     const right = el("div", "right");
 
     const nav = el("nav", "topnav");
@@ -197,7 +164,14 @@ export class SoHeader extends HTMLElement {
       const li = el("li");
       const a = el("a") as HTMLAnchorElement;
       a.href = item.href;
-      a.textContent = item.label;
+      if (item.label === "my.so.ch") {
+        const label = el("span");
+        label.textContent = item.label;
+        a.append(label);
+        a.insertAdjacentHTML("beforeend", ` <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><title>my.so.ch</title><path d="M20.39 18.71c1.48-1.84 2.36-4.17 2.36-6.71 0-5.93-4.82-10.75-10.75-10.75S1.25 6.07 1.25 12 6.07 22.75 12 22.75c3.39 0 6.41-1.58 8.38-4.04ZM12 2.75c5.1 0 9.25 4.15 9.25 9.25 0 1.93-.6 3.72-1.61 5.21-1.08-.92-3.49-2.46-7.64-2.46s-6.56 1.54-7.64 2.46A9.156 9.156 0 0 1 2.75 12c0-5.1 4.15-9.25 9.25-9.25Zm0 18.5c-2.63 0-5.01-1.11-6.69-2.88.84-.74 2.93-2.12 6.69-2.12s5.85 1.38 6.69 2.12C17 20.14 14.63 21.25 12 21.25Z"/><path d="M12 12.75c2.07 0 3.75-1.68 3.75-3.75S14.07 5.25 12 5.25 8.25 6.93 8.25 9s1.68 3.75 3.75 3.75Zm0-6c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75Z"/></svg>`);
+      } else {
+        a.textContent = item.label;
+      }
       li.appendChild(a);
       ul.appendChild(li);
     }
@@ -214,7 +188,7 @@ export class SoHeader extends HTMLElement {
 
     right.append(nav, actions);
 
-    topInner.append(left, mid, right);
+    topInner.append(left, right);
     top.appendChild(topInner);
 
     // Row 2: section nav
@@ -282,35 +256,33 @@ export class SoHeader extends HTMLElement {
     return (`
       :host{
         display: block;
-        background: var(--so-bg, #fafafa);
-        color: var(--so-fg, #333);
+        background: var(--so-bg, #fff);
+        color: var(--so-fg, rgb(47, 72, 88));
         font-family: var(--so-font-family, Frutiger, sans-serif);
         font-size: var(--so-font-size, 16px);
         line-height: var(--so-line-height, 1.5);
       }
 
       .so-header{
-        background: var(--so-bg, #fafafa);
-        color: var(--so-fg, #333);
+        background: var(--so-bg, #fff);
+        color: var(--so-fg, rgb(47, 72, 88));
         border-bottom: 1px solid rgba(0,0,0,0.08);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale; /* mac Firefox */
       }
 
       .so-container{
         width: 100%;
         max-width: var(--so-container-size, var(--so-container-size-full, 120rem));
         margin-inline: auto;
-        padding-inline: var(--so-container-padding, 1rem);
+        padding-inline: var(--so-container-padding, var(--so-space-6, 1.5rem));
         box-sizing: border-box;
       }
 
-      .topbar{
-        width: 100%;
-        background: var(--so-bg, #fafafa);
-      }
       .topbar-inner{
         height: var(--so-header-height, 4.25rem);
-        display: grid;
-        grid-template-columns: auto 1fr auto;
+        display: flex;
+        justify-content: space-between;
         align-items: center;
         gap: 1.25rem;
       }
@@ -326,51 +298,12 @@ export class SoHeader extends HTMLElement {
         display: block;
       }
 
-      /* Search */
-      .mid{ display: flex; align-items: center; }
-      form.search{
-        position: relative;
-        width: min(36rem, 100%);
-      }
-      form.search input[type="search"]{
-        width: 100%;
-        height: 2.75rem;
-        padding: 0.65rem 2.75rem 0.65rem 1rem;
-        border-radius: 9999px;
-        border: 1px solid rgba(0,0,0,0.12);
-        background: #fff;
-        outline: none;
-        color: var(--so-fg, #333);
-      }
-      form.search input[type="search"]::placeholder{ color: rgba(0,0,0,0.55); }
-      form.search input[type="search"]:focus{
-        border-color: rgba(0,0,0,0.25);
-        box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
-      }
-      .search-btn{
-        position: absolute;
-        right: 0.25rem;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 2.25rem;
-        height: 2.25rem;
-        border-radius: 9999px;
-        border: none;
-        background: transparent;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: rgba(0,0,0,0.75);
-      }
-      .search-btn:hover{ background: rgba(0,0,0,0.04); }
-
       /* Top links */
       .right{ display: flex; align-items: center; gap: 1rem; }
       .topnav ul{
         list-style: none;
         display: flex;
-        gap: 1.25rem;
+        gap: 2.5rem;
         margin: 0;
         padding: 0;
         align-items: center;
@@ -378,10 +311,25 @@ export class SoHeader extends HTMLElement {
       }
       .topnav a{
         text-decoration: none;
-        font-weight: 600;
-        color: rgba(0,0,0,0.85);
+        font-weight: 900;
+        color: var(--so-fg, rgb(47, 72, 88));
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        line-height: 1;
       }
-      .topnav a:hover{ text-decoration: underline; text-underline-offset: 0.25em; }
+      .topnav a span{
+        line-height: 1;
+      }
+      .topnav .icon{
+        width: 1.5rem;
+        height: 1.5rem;
+        fill: currentColor;
+        display: block;
+        align-self: center;
+        transform: translateY(-2px);
+      }
+      .topnav a:hover{ color: rgb(204, 0, 0); }
 
       .actions{ display: flex; align-items: center; }
       .iconbtn{
@@ -397,12 +345,15 @@ export class SoHeader extends HTMLElement {
         color: rgba(0,0,0,0.8);
       }
       .iconbtn:hover{ background: rgba(0,0,0,0.04); }
+      .menubtn{
+        display: none;
+        color: rgb(204, 0, 0);
+      }
 
       /* Second row */
       .secondbar{
         width: 100%;
-        border-top: 1px solid rgba(0,0,0,0.06);
-        padding-block: 0.9rem;
+        margin-block: 0.4rem;
       }
       .sectionnav ul{
         list-style: none;
@@ -411,34 +362,34 @@ export class SoHeader extends HTMLElement {
         margin: 0;
         padding: 0;
         align-items: baseline;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
       }
       .sectionnav a{
         text-decoration: none;
-        font-weight: 800;
-        font-size: 1.75rem;
+        font-weight: 900;
+        font-size: 1.5rem;
         letter-spacing: -0.01em;
-        color: rgba(0,0,0,0.9);
+        color: var(--so-fg, rgb(47, 72, 88));
+        padding-bottom: 0.45rem;
+        border-bottom: 1px solid transparent;
+        margin-bottom: -1px;
+      }
+      .sectionnav a:hover{
+        color: rgb(204, 0, 0);
       }
       .sectionnav a[aria-current="page"]{
-        text-decoration: underline;
-        text-underline-offset: 0.22em;
+        color: rgb(204, 0, 0);
+        border-bottom: 1px solid rgb(204, 0, 0);
       }
 
-      /* Responsive: hide search+links progressively */
+      /* Responsive: hide links + show menu */
       @media (max-width: 992px){
-        form.search{ width: min(22rem, 100%); }
-        .topnav ul{ gap: 1rem; }
+        .topnav ul{ gap: 2rem; }
       }
       @media (max-width: 768px){
-        .topbar-inner{ grid-template-columns: auto 1fr auto; }
         .topnav{ display: none; }
-        .mid{ justify-content: center; }
-        form.search{ width: 100%; max-width: 22rem; }
         .sectionnav a{ font-size: 1.35rem; }
-      }
-      @media (max-width: 520px){
-        .mid{ display: none; }
-        .topbar-inner{ grid-template-columns: auto auto; justify-content: space-between; }
+        .menubtn{ display: inline-flex; }
       }
 
       /* Mobile panel */
@@ -449,7 +400,7 @@ export class SoHeader extends HTMLElement {
         .mobile-panel-inner[data-open="false"]{ display: none; }
       }
       .mobile-group{ margin-top: 0.75rem; }
-      .mobile-title{ font-weight: 800; margin-bottom: 0.5rem; }
+      .mobile-title{ font-weight: 900; margin-bottom: 0.5rem; }
       .mobile-list{ list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; }
       .mobile-list a{
         display: block;
@@ -458,21 +409,15 @@ export class SoHeader extends HTMLElement {
         text-decoration: none;
         border: 1px solid rgba(0,0,0,0.08);
         background: rgba(255,255,255,0.75);
+        color: var(--so-fg, rgb(47, 72, 88));
+        font-weight: 900;
       }
-      .mobile-list a:hover{ background: rgba(255,255,255,0.95); }
+      .mobile-list a:hover{
+        color: rgb(204, 0, 0);
+        background: rgba(255,255,255,0.95);
+      }
     `).replace(/^[\t ]+/gm, "").trim() + "\n";
   }
-}
-
-function escapeHtml(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
-
-function searchIcon(): string {
-  return `
-  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-    <path fill="currentColor" d="M10 2a8 8 0 105.293 14.293l4.207 4.207 1.414-1.414-4.207-4.207A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/>
-  </svg>`;
 }
 
 function burgerIcon(): string {
