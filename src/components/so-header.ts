@@ -128,8 +128,11 @@ export class SoHeader extends HTMLElement {
     if (!panel || !btn) return;
 
     const open = panel.getAttribute("data-open") === "true";
-    panel.setAttribute("data-open", open ? "false" : "true");
-    btn.setAttribute("aria-expanded", open ? "false" : "true");
+    const nextOpen = !open;
+    panel.setAttribute("data-open", nextOpen ? "true" : "false");
+    btn.setAttribute("aria-expanded", nextOpen ? "true" : "false");
+    btn.setAttribute("data-open", nextOpen ? "true" : "false");
+    btn.innerHTML = nextOpen ? closeIcon() : burgerIcon();
   }
 
   private render(): void {
@@ -183,6 +186,7 @@ export class SoHeader extends HTMLElement {
     btnMenu.dataset.action = "toggle-menu";
     btnMenu.setAttribute("aria-label", "Menü");
     btnMenu.setAttribute("aria-expanded", "false");
+    btnMenu.setAttribute("data-open", "false");
     btnMenu.innerHTML = burgerIcon();
     actions.append(btnMenu);
 
@@ -356,6 +360,14 @@ export class SoHeader extends HTMLElement {
         display: none;
         color: rgb(204, 0, 0);
       }
+      .menubtn[data-open="true"]{
+        background: rgb(204, 0, 0);
+        border-color: rgb(204, 0, 0);
+        color: #fff;
+      }
+      .menubtn[data-open="true"]:hover{
+        background: rgb(204, 0, 0);
+      }
 
       /* Second row */
       .secondbar{
@@ -453,5 +465,12 @@ function burgerIcon(): string {
   return `
   <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
     <path fill="currentColor" d="M4 7h16v2H4V7zm0 6h16v2H4v-2zm0 6h16v2H4v-2z"/>
+  </svg>`;
+}
+
+function closeIcon(): string {
+  return `
+  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path fill="currentColor" d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4l-6.3 6.31-1.41-1.42L9.17 12 2.88 5.71l1.41-1.42 6.3 6.31 6.3-6.31 1.41 1.42Z"/>
   </svg>`;
 }
