@@ -144,8 +144,8 @@ export class SoHeader extends HTMLElement {
 
     // Row 1: full-width, internal container for gutters
     const top = el("div", "topbar");
-    const topInner = el("div", "topbar-inner so-container");
-    topInner.style.setProperty("--so-container-size", "var(--so-container-size-full)");
+    const topInner = el("div", "topbar-inner so-header-container");
+    //topInner.style.setProperty("--so-container-size", "var(--so-container-size-full)");
 
     const left = el("div", "left");
     const logoLink = el("a", "logo") as HTMLAnchorElement;
@@ -193,8 +193,8 @@ export class SoHeader extends HTMLElement {
 
     // Row 2: section nav
     const second = el("div", "secondbar");
-    const secondInner = el("div", "secondbar-inner so-container");
-    secondInner.style.setProperty("--so-container-size", "var(--so-container-size-full)");
+    const secondInner = el("div", "secondbar-inner so-header-container");
+    //secondInner.style.setProperty("--so-container-size", "var(--so-container-size-full)");
 
     const sectionNav = el("nav", "sectionnav");
     sectionNav.setAttribute("aria-label", "Bereiche");
@@ -216,7 +216,7 @@ export class SoHeader extends HTMLElement {
     // Mobile panel (drawer-ish)
     const mobilePanelWrap = el("div", "mobile-panel");
     const mobilePanel = el("div", "mobile-panel-inner so-container");
-    mobilePanel.style.setProperty("--so-container-size", "var(--so-container-size-full)");
+    //mobilePanel.style.setProperty("--so-container-size", "var(--so-container-size-full)");
     mobilePanel.setAttribute("data-open", "false");
 
     const mpTop = el("div", "mobile-group");
@@ -274,6 +274,13 @@ export class SoHeader extends HTMLElement {
       .so-container{
         width: 100%;
         max-width: var(--so-container-size, var(--so-container-size-full, 120rem));
+        margin-inline: auto;
+        padding-inline: var(--so-container-padding, var(--so-space-6, 1.5rem));
+        box-sizing: border-box;
+      }
+
+      .so-header-container{
+        width: 100%;
         margin-inline: auto;
         padding-inline: var(--so-container-padding, var(--so-space-6, 1.5rem));
         box-sizing: border-box;
@@ -353,7 +360,7 @@ export class SoHeader extends HTMLElement {
       /* Second row */
       .secondbar{
         width: 100%;
-        margin-block: 0.4rem;
+        /*margin-block: 0.4rem;*/
       }
       .sectionnav ul{
         list-style: none;
@@ -362,7 +369,7 @@ export class SoHeader extends HTMLElement {
         margin: 0;
         padding: 0;
         align-items: baseline;
-        border-bottom: 1px solid rgba(0,0,0,0.08);
+        /*border-bottom: 1px solid rgba(0,0,0,0.08);*/
       }
       .sectionnav a{
         text-decoration: none;
@@ -373,6 +380,7 @@ export class SoHeader extends HTMLElement {
         padding-bottom: 0.45rem;
         border-bottom: 1px solid transparent;
         margin-bottom: -1px;
+        display: inline-block;
       }
       .sectionnav a:hover{
         color: rgb(204, 0, 0);
@@ -401,17 +409,38 @@ export class SoHeader extends HTMLElement {
       }
       .mobile-group{ margin-top: 0.75rem; }
       .mobile-title{ font-weight: 900; margin-bottom: 0.5rem; }
-      .mobile-list{ list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; }
+
+      .mobile-list{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 0;
+
+        border-top: 1px solid var(--so-border-color);
+        border-bottom: 1px solid var(--so-border-color);
+        /*border-radius: 0.6rem;*/
+        overflow: hidden; /* clips inner items to rounded corners */
+      }
+
       .mobile-list a{
         display: block;
         padding: 0.65rem 0.75rem;
-        border-radius: 0.6rem;
         text-decoration: none;
-        border: 1px solid rgba(0,0,0,0.08);
+        font-size: 1rem;
+
+        border: 0; /* remove per-item border */
+        border-radius: 0; /* only the container rounds */
         background: rgba(255,255,255,0.75);
         color: var(--so-fg, rgb(47, 72, 88));
-        font-weight: 900;
+        font-weight: 400;
       }
+
+      /* add separators (1px) between items */
+      .mobile-list li + li a{
+        border-top: 1px solid var(--so-border-color);
+      }
+
       .mobile-list a:hover{
         color: rgb(204, 0, 0);
         background: rgba(255,255,255,0.95);
