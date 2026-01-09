@@ -270,7 +270,7 @@ export class SoHeader extends HTMLElement {
       .so-header{
         background: var(--so-bg, #fff);
         color: var(--so-fg, rgb(47, 72, 88));
-        border-bottom: 1px solid rgba(0,0,0,0.08);
+        border-bottom: 1px solid var(--so-border-color);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale; /* mac Firefox */
       }
@@ -344,7 +344,7 @@ export class SoHeader extends HTMLElement {
 
       .actions{ display: flex; align-items: center; }
       .iconbtn{
-        border: 1px solid rgba(0,0,0,0.12);
+        border: 1px solid var(--so-border-color);
         background: transparent;
         border-radius: 9999px;
         width: 2.75rem;
@@ -413,12 +413,19 @@ export class SoHeader extends HTMLElement {
       }
 
       /* Mobile panel */
-      .mobile-panel{ display: none; border-top: 1px solid rgba(0,0,0,0.06); }
+      .mobile-panel{ display: none; border-top: 1px solid var(--so-border-color); }
       .mobile-panel-inner{ padding-block: 0.75rem 1.25rem; }
       @media (max-width: 768px){
-        .mobile-panel{ display: block; }
+        .mobile-panel{ 
+          display: block; 
+          border: 0;
+        }
         .mobile-panel-inner[data-open="false"]{ display: none; }
       }
+
+      
+
+
       .mobile-group{ margin-top: 0.75rem; }
       .mobile-title{ font-weight: 900; margin-bottom: 0.5rem; }
 
