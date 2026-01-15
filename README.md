@@ -10,8 +10,10 @@ abgeleitet aus dem Layout-Prinzip von so.ch.
   - Schriftfarbe: `rgb(47, 72, 88)`  
   - Schrift: `Frutiger, sans-serif`
 - `src/components/so-header.ts` – `<so-header>` Web Component (Shadow DOM)
+- `src/components/so-breadcrump.ts` – `<so-breadcrump>` Web Component (Shadow DOM)
 - `src/demo/index.html` – Demo-Seite
 - `tests/so-header.test.ts` – Tests (Jest + JSDOM)
+- `tests/so-breadcrump.test.ts` – Tests (Jest + JSDOM)
 
 ## Voraussetzungen
 
@@ -92,6 +94,7 @@ Dann im Browser öffnen:
 <script type="module" src="/dist/index.js"></script>
 
 <so-header></so-header>
+<so-breadcrump></so-breadcrump>
 ```
 
 ### 3) Navigation konfigurieren (optional)
@@ -108,10 +111,47 @@ Dann im Browser öffnen:
 ></so-header>
 ```
 
-## Events
+## Generelle Informationen
+
+- Alle Komponenten sind **Custom Elements** mit **Shadow DOM**.
+- Konfiguration erfolgt über Attribute (meist JSON-Strings).
+- Styling per CSS Custom Properties, die im Host-Kontext gesetzt werden können.
+
+## Komponenten
+
+### `<so-header>`
+
+**Attribute**
+
+- `top-nav`: JSON-Array aus `{ label, href }`
+- `section-nav`: JSON-Array aus `{ label, href }`
+- `active-section`: String
+- `logo-href`: String
+- `site-name`: String
+
+**Events**
 
 - `so-section-select` → wird ausgelöst, wenn ein Bereich (Services/Verwaltung) geklickt wird  
   `detail: { label, href }`
+
+### `<so-breadcrump>`
+
+**Attribute**
+
+- `items`: JSON-Array aus Objekten `{ label, href }`  
+  - letzter Eintrag wird als aktueller Pfad dargestellt (rot)
+
+**Beispiel**
+
+```html
+<so-breadcrump
+  items='[{"label":"so.ch","href":"https://so.ch"},{"label":"Verwaltung","href":"https://so.ch/verwaltung/"},{"label":"Bau- und Justizdepartement","href":"https://so.ch/verwaltung/bau-und-justizdepartement/"},{"label":"Amt für Geoinformation","href":"https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/"}]'
+></so-breadcrump>
+```
+
+**Custom Properties**
+
+- `--so-breadcrump-padding`: Padding (Default `24px`)
 
 ## Customizing
 
