@@ -47,8 +47,25 @@ npm test
 
 ## Dev / Demo starten
 
-> Wichtig: Der Dev-Server serviert aus `dist/`. Deshalb immer zuerst `npm run build` ausführen.
+### Live Reload (empfohlen)
 
+```bash
+npm run dev:hot
+```
+
+Das startet:
+
+- TypeScript im Watch-Modus
+- automatisches Kopieren von Demo/Styles nach `dist/`
+- den Dev-Server mit Live-Reload
+
+Dann im Browser öffnen:
+
+- http://localhost:5173
+
+### Ohne Live Reload
+
+> Wichtig: Der Dev-Server serviert aus `dist/`. Deshalb immer zuerst `npm run build` ausführen.
 
 ```bash
 npm run build

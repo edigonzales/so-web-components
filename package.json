@@ -9,6 +9,8 @@
     "pretest": "npm run build && tsc -p tsconfig.tests.json",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "dev": "node scripts/dev-server.mjs",
+    "dev:watch": "node scripts/dev-watch.mjs",
+    "dev:hot": "node scripts/dev-hot.mjs",
     "lint": "node scripts/simple-lint.mjs",
     "build:assets": "node scripts/copy-assets.mjs"
   },
