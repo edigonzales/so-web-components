@@ -41,7 +41,7 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string): HTMLEl
 
 type BuildNavOptions = {
   className?: string;
-  setLinkContent?: (a: HTMLAnchorElement, item: NavItem) => void;
+  setLinkContent?: (a: HTMLAnchorElement, item: NavItem) => boolean | void;
   setLinkAttributes?: (a: HTMLAnchorElement, item: NavItem) => void;
 };
 
@@ -51,9 +51,8 @@ function buildNavList(items: NavItem[], options: BuildNavOptions = {}): HTMLULis
     const li = el("li");
     const a = el("a") as HTMLAnchorElement;
     a.href = item.href;
-    if (options.setLinkContent) {
-      options.setLinkContent(a, item);
-    } else {
+    const handled = options.setLinkContent?.(a, item);
+    if (!handled) {
       a.textContent = item.label;
     }
     options.setLinkAttributes?.(a, item);
@@ -186,9 +185,9 @@ export class SoHeader extends HTMLElement {
           label.textContent = item.label;
           a.append(label);
           a.insertAdjacentHTML("beforeend", ` <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><title>my.so.ch</title><path d="M20.39 18.71c1.48-1.84 2.36-4.17 2.36-6.71 0-5.93-4.82-10.75-10.75-10.75S1.25 6.07 1.25 12 6.07 22.75 12 22.75c3.39 0 6.41-1.58 8.38-4.04ZM12 2.75c5.1 0 9.25 4.15 9.25 9.25 0 1.93-.6 3.72-1.61 5.21-1.08-.92-3.49-2.46-7.64-2.46s-6.56 1.54-7.64 2.46A9.156 9.156 0 0 1 2.75 12c0-5.1 4.15-9.25 9.25-9.25Zm0 18.5c-2.63 0-5.01-1.11-6.69-2.88.84-.74 2.93-2.12 6.69-2.12s5.85 1.38 6.69 2.12C17 20.14 14.63 21.25 12 21.25Z"/><path d="M12 12.75c2.07 0 3.75-1.68 3.75-3.75S14.07 5.25 12 5.25 8.25 6.93 8.25 9s1.68 3.75 3.75 3.75Zm0-6c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75Z"/></svg>`);
-        } else {
-          a.textContent = item.label;
+          return true;
         }
+        return false;
       }
     });
     nav.appendChild(ul);
