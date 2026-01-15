@@ -99,21 +99,19 @@ export class SoHeader extends HTMLElement {
     this.root.addEventListener("click", (e) => {
       const t = e.target as HTMLElement | null;
       const btn = t?.closest("button[data-action]") as HTMLButtonElement | null;
-      if (!btn) return;
+      if (btn?.dataset.action === "toggle-menu") {
+        this.toggleMobileMenu();
+      }
 
-      const action = btn.dataset.action;
-      if (action === "toggle-menu") this.toggleMobileMenu();
-    });
-
-    this.root.addEventListener("click", (e) => {
-      const a = (e.target as HTMLElement | null)?.closest("a[data-section]") as HTMLAnchorElement | null;
-      if (!a) return;
-      const label = a.dataset.section ?? "";
-      this.dispatchEvent(new CustomEvent("so-section-select", {
-        detail: { label, href: a.getAttribute("href") ?? "" },
-        bubbles: true,
-        composed: true
-      }));
+      const a = t?.closest("a[data-section]") as HTMLAnchorElement | null;
+      if (a) {
+        const label = a.dataset.section ?? "";
+        this.dispatchEvent(new CustomEvent("so-section-select", {
+          detail: { label, href: a.getAttribute("href") ?? "" },
+          bubbles: true,
+          composed: true
+        }));
+      }
     });
   }
 
