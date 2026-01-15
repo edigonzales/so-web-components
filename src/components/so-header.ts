@@ -82,11 +82,6 @@ export class SoHeader extends HTMLElement {
     this.bindEvents();
   }
 
-  connectedCallback(): void {
-    this.updateFromAttributes();
-    this.render();
-  }
-
   attributeChangedCallback(): void {
     this.updateFromAttributes();
     this.render();
