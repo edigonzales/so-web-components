@@ -152,8 +152,7 @@ Dann im Browser öffnen:
 
 **Custom Properties**
 
-- `--so-breadcrump-padding`: horizontales Padding (Default `24px`)
-- `--so-breadcrump-padding-top`: oberes Padding (Default `24px`)
+- `--so-breadcrump-padding`: Padding (Default `24px`)
 
 ## Customizing
 

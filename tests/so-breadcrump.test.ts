@@ -38,12 +38,12 @@ describe("so-breadcrump", () => {
     expect(links[0].getAttribute("href")).toBe("/middle");
   });
 
-  test("sets 24px padding top via styles", () => {
+  test("sets 24px padding via styles", () => {
     const el = document.createElement("so-breadcrump");
     document.body.appendChild(el);
 
     const shadow = (el as HTMLElement).shadowRoot!;
     const style = shadow.querySelector("style")?.textContent ?? "";
-    expect(style).toContain("padding-top: var(--so-breadcrump-padding-top, 24px)");
+    expect(style).toContain("padding: var(--so-breadcrump-padding, 24px)");
   });
 });

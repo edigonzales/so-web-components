@@ -76,7 +76,7 @@ export class SoBreadcrump extends HTMLElement {
     const wrapper = el("nav", "so-breadcrump");
     wrapper.setAttribute("aria-label", "Breadcrumb");
 
-    const container = el("div", "so-container");
+    const container = el("div", "so-breadcrump-container");
     const list = el("ol", "list");
 
     this.items.forEach((item, index) => {
@@ -123,19 +123,16 @@ export class SoBreadcrump extends HTMLElement {
         color: var(--so-fg, rgb(47, 72, 88));
       }
 
-      .so-container{
+      .so-breadcrump-container{
         width: 100%;
-        max-width: var(--so-container-size, var(--so-container-size-full, 120rem));
-        margin-inline: auto;
-        padding-inline: var(--so-breadcrump-padding, 24px);
-        padding-top: var(--so-breadcrump-padding-top, 24px);
+        padding: var(--so-breadcrump-padding, 24px);
       }
 
       .list{
         list-style: none;
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
+        align-items: flex-end;
         gap: 0.5rem;
         padding: 0;
         margin: 0;
@@ -145,14 +142,16 @@ export class SoBreadcrump extends HTMLElement {
 
       .item{
         display: inline-flex;
-        align-items: center;
+        align-items: flex-end;
         gap: 0.5rem;
         color: inherit;
       }
 
-      .item a{
+      .item a,
+      .item span{
         color: inherit;
         text-decoration: none;
+        line-height: 1;
       }
 
       .item a:hover,
@@ -165,10 +164,11 @@ export class SoBreadcrump extends HTMLElement {
       }
 
       .chevron{
-        width: 14px;
-        height: 14px;
+        width: 21px;
+        height: 21px;
         fill: #e01f26;
         flex: 0 0 auto;
+        display: block;
       }
     `;
   }
