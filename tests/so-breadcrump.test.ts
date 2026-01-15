@@ -17,15 +17,15 @@ describe("so-breadcrump", () => {
     expect(items.length).toBeGreaterThan(1);
     const lastItem = items[items.length - 1];
     expect(lastItem?.classList.contains("current")).toBe(true);
-    expect(lastItem?.querySelector("a")).toBeNull();
+    expect(lastItem?.querySelector("a")).not.toBeNull();
   });
 
-  test("accepts items attribute with mixed strings and objects", () => {
+  test("accepts items attribute with label and href objects", () => {
     const el = document.createElement("so-breadcrump");
     el.setAttribute("items", JSON.stringify([
-      "Start",
+      { label: "Start", href: "/start" },
       { label: "Zwischen", href: "/middle" },
-      { label: "Ende" }
+      { label: "Ende", href: "/end" }
     ]));
     document.body.appendChild(el);
 
@@ -34,8 +34,8 @@ describe("so-breadcrump", () => {
     expect(labels).toEqual(expect.arrayContaining(["Start", "Zwischen", "Ende"]));
 
     const links = Array.from(shadow.querySelectorAll(".item a"));
-    expect(links.length).toBe(1);
-    expect(links[0].getAttribute("href")).toBe("/middle");
+    expect(links.length).toBe(3);
+    expect(links[1].getAttribute("href")).toBe("/middle");
   });
 
   test("sets 24px padding via styles", () => {

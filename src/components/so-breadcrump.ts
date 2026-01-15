@@ -1,10 +1,10 @@
-type BreadcrumpItem = { label: string; href?: string };
+type BreadcrumpItem = { label: string; href: string };
 
 const DEFAULT_ITEMS: BreadcrumpItem[] = [
-  { label: "so.ch", href: "#" },
-  { label: "Verwaltung", href: "#" },
-  { label: "Bau- und Justizdepartement", href: "#" },
-  { label: "Amt für Geoinformation" }
+  { label: "so.ch", href: "https://so.ch" },
+  { label: "Verwaltung", href: "https://so.ch/verwaltung/" },
+  { label: "Bau- und Justizdepartement", href: "https://so.ch/verwaltung/bau-und-justizdepartement/" },
+  { label: "Amt für Geoinformation", href: "https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/" }
 ];
 
 const CHEVRON_SVG = `<svg class="chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -18,18 +18,12 @@ function safeParseItems(json: string | null, fallback: BreadcrumpItem[]): Breadc
     if (!Array.isArray(v)) return fallback;
     const items: BreadcrumpItem[] = [];
     for (const it of v) {
-      if (typeof it === "string") {
-        items.push({ label: it });
-        continue;
-      }
       if (!it || typeof it !== "object") continue;
       const record = it as Record<string, unknown>;
       const label = record["label"];
       const href = record["href"];
-      if (typeof label === "string") {
-        const item: BreadcrumpItem = { label };
-        if (typeof href === "string") item.href = href;
-        items.push(item);
+      if (typeof label === "string" && typeof href === "string") {
+        items.push({ label, href });
       }
     }
     return items.length ? items : fallback;
@@ -84,17 +78,9 @@ export class SoBreadcrump extends HTMLElement {
       const li = el("li", "item");
       if (isLast) li.classList.add("current");
 
-      let labelEl: HTMLElement;
-      if (item.href && !isLast) {
-        const a = el("a") as HTMLAnchorElement;
-        a.href = item.href;
-        a.textContent = item.label;
-        labelEl = a;
-      } else {
-        const span = el("span");
-        span.textContent = item.label;
-        labelEl = span;
-      }
+      const labelEl = el("a") as HTMLAnchorElement;
+      labelEl.href = item.href;
+      labelEl.textContent = item.label;
 
       li.appendChild(labelEl);
 
@@ -147,8 +133,7 @@ export class SoBreadcrump extends HTMLElement {
         color: inherit;
       }
 
-      .item a,
-      .item span{
+      .item a{
         color: inherit;
         text-decoration: none;
         line-height: 1;
@@ -156,10 +141,12 @@ export class SoBreadcrump extends HTMLElement {
 
       .item a:hover,
       .item a:focus-visible{
-        text-decoration: underline;
+        color: #e01f26;
+        text-decoration: none;
       }
 
-      .item.current{
+      .item.current,
+      .item.current a{
         color: #e01f26;
       }
 

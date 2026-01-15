@@ -138,15 +138,14 @@ Dann im Browser öffnen:
 
 **Attribute**
 
-- `items`: JSON-Array aus Strings oder Objekten `{ label, href? }`  
-  - letzter Eintrag wird als aktueller Pfad dargestellt (rot)  
-  - `href` wird nur für nicht-letzte Einträge als Link gerendert
+- `items`: JSON-Array aus Objekten `{ label, href }`  
+  - letzter Eintrag wird als aktueller Pfad dargestellt (rot)
 
 **Beispiel**
 
 ```html
 <so-breadcrump
-  items='["so.ch","Verwaltung","Bau- und Justizdepartement","Amt für Geoinformation"]'
+  items='[{"label":"so.ch","href":"https://so.ch"},{"label":"Verwaltung","href":"https://so.ch/verwaltung/"},{"label":"Bau- und Justizdepartement","href":"https://so.ch/verwaltung/bau-und-justizdepartement/"},{"label":"Amt für Geoinformation","href":"https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/"}]'
 ></so-breadcrump>
 ```
 
