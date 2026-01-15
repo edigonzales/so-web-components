@@ -262,8 +262,6 @@ export class SoHeader extends HTMLElement {
         background: var(--so-bg, #fff);
         color: var(--so-fg, rgb(47, 72, 88));
         border-bottom: 1px solid var(--so-border-color);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale; /* mac Firefox */
       }
 
       .so-container{
