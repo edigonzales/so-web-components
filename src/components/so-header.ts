@@ -39,6 +39,29 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string): HTMLEl
   return n;
 }
 
+type BuildNavOptions = {
+  className?: string;
+  setLinkContent?: (a: HTMLAnchorElement, item: NavItem) => boolean | void;
+  setLinkAttributes?: (a: HTMLAnchorElement, item: NavItem) => void;
+};
+
+function buildNavList(items: NavItem[], options: BuildNavOptions = {}): HTMLUListElement {
+  const ul = el("ul", options.className);
+  for (const item of items) {
+    const li = el("li");
+    const a = el("a") as HTMLAnchorElement;
+    a.href = item.href;
+    const handled = options.setLinkContent?.(a, item);
+    if (!handled) {
+      a.textContent = item.label;
+    }
+    options.setLinkAttributes?.(a, item);
+    li.appendChild(a);
+    ul.appendChild(li);
+  }
+  return ul;
+}
+
 const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" id="logo" viewBox="0 0 171.086 15.742" aria-hidden="true" focusable="false">
   <g>
     <path d="m20.424.104h.877l-.595,2.634.016.017L23.658.104h1.156l-3.296,2.951,2.43,3.036h-1.105l-2.242-2.864-.613,2.864h-.887L20.424.104Z" fill="#1d1d1b"></path>
@@ -155,22 +178,18 @@ export class SoHeader extends HTMLElement {
 
     const nav = el("nav", "topnav");
     nav.setAttribute("aria-label", "Hauptnavigation");
-    const ul = el("ul");
-    for (const item of this.topNav) {
-      const li = el("li");
-      const a = el("a") as HTMLAnchorElement;
-      a.href = item.href;
-      if (item.label === "my.so.ch") {
-        const label = el("span");
-        label.textContent = item.label;
-        a.append(label);
-        a.insertAdjacentHTML("beforeend", ` <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><title>my.so.ch</title><path d="M20.39 18.71c1.48-1.84 2.36-4.17 2.36-6.71 0-5.93-4.82-10.75-10.75-10.75S1.25 6.07 1.25 12 6.07 22.75 12 22.75c3.39 0 6.41-1.58 8.38-4.04ZM12 2.75c5.1 0 9.25 4.15 9.25 9.25 0 1.93-.6 3.72-1.61 5.21-1.08-.92-3.49-2.46-7.64-2.46s-6.56 1.54-7.64 2.46A9.156 9.156 0 0 1 2.75 12c0-5.1 4.15-9.25 9.25-9.25Zm0 18.5c-2.63 0-5.01-1.11-6.69-2.88.84-.74 2.93-2.12 6.69-2.12s5.85 1.38 6.69 2.12C17 20.14 14.63 21.25 12 21.25Z"/><path d="M12 12.75c2.07 0 3.75-1.68 3.75-3.75S14.07 5.25 12 5.25 8.25 6.93 8.25 9s1.68 3.75 3.75 3.75Zm0-6c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75Z"/></svg>`);
-      } else {
-        a.textContent = item.label;
+    const ul = buildNavList(this.topNav, {
+      setLinkContent: (a, item) => {
+        if (item.label === "my.so.ch") {
+          const label = el("span");
+          label.textContent = item.label;
+          a.append(label);
+          a.insertAdjacentHTML("beforeend", ` <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><title>my.so.ch</title><path d="M20.39 18.71c1.48-1.84 2.36-4.17 2.36-6.71 0-5.93-4.82-10.75-10.75-10.75S1.25 6.07 1.25 12 6.07 22.75 12 22.75c3.39 0 6.41-1.58 8.38-4.04ZM12 2.75c5.1 0 9.25 4.15 9.25 9.25 0 1.93-.6 3.72-1.61 5.21-1.08-.92-3.49-2.46-7.64-2.46s-6.56 1.54-7.64 2.46A9.156 9.156 0 0 1 2.75 12c0-5.1 4.15-9.25 9.25-9.25Zm0 18.5c-2.63 0-5.01-1.11-6.69-2.88.84-.74 2.93-2.12 6.69-2.12s5.85 1.38 6.69 2.12C17 20.14 14.63 21.25 12 21.25Z"/><path d="M12 12.75c2.07 0 3.75-1.68 3.75-3.75S14.07 5.25 12 5.25 8.25 6.93 8.25 9s1.68 3.75 3.75 3.75Zm0-6c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75Z"/></svg>`);
+          return true;
+        }
+        return false;
       }
-      li.appendChild(a);
-      ul.appendChild(li);
-    }
+    });
     nav.appendChild(ul);
 
     const actions = el("div", "actions");
@@ -195,17 +214,12 @@ export class SoHeader extends HTMLElement {
 
     const sectionNav = el("nav", "sectionnav");
     sectionNav.setAttribute("aria-label", "Bereiche");
-    const sul = el("ul");
-    for (const item of this.sectionNav) {
-      const li = el("li");
-      const a = el("a") as HTMLAnchorElement;
-      a.href = item.href;
-      a.textContent = item.label;
-      a.dataset.section = item.label;
-      if (item.label === this.activeSection) a.setAttribute("aria-current", "page");
-      li.appendChild(a);
-      sul.appendChild(li);
-    }
+    const sul = buildNavList(this.sectionNav, {
+      setLinkAttributes: (a, item) => {
+        a.dataset.section = item.label;
+        if (item.label === this.activeSection) a.setAttribute("aria-current", "page");
+      }
+    });
     sectionNav.appendChild(sul);
     secondInner.appendChild(sectionNav);
     second.appendChild(secondInner);
@@ -218,28 +232,12 @@ export class SoHeader extends HTMLElement {
 
     const mpTop = el("div", "mobile-group");
     mpTop.appendChild(el("div", "mobile-title")).textContent = "Navigation";
-    const mpUl = el("ul", "mobile-list");
-    for (const item of this.topNav) {
-      const li = el("li");
-      const a = el("a") as HTMLAnchorElement;
-      a.href = item.href;
-      a.textContent = item.label;
-      li.appendChild(a);
-      mpUl.appendChild(li);
-    }
+    const mpUl = buildNavList(this.topNav, { className: "mobile-list" });
     mpTop.appendChild(mpUl);
 
     const mpSections = el("div", "mobile-group");
     mpSections.appendChild(el("div", "mobile-title")).textContent = "Bereiche";
-    const msUl = el("ul", "mobile-list");
-    for (const item of this.sectionNav) {
-      const li = el("li");
-      const a = el("a") as HTMLAnchorElement;
-      a.href = item.href;
-      a.textContent = item.label;
-      li.appendChild(a);
-      msUl.appendChild(li);
-    }
+    const msUl = buildNavList(this.sectionNav, { className: "mobile-list" });
     mpSections.appendChild(msUl);
 
     mobilePanel.append(mpTop, mpSections);
