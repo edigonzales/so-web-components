@@ -10,10 +10,10 @@ abgeleitet aus dem Layout-Prinzip von so.ch.
   - Schriftfarbe: `rgb(47, 72, 88)`  
   - Schrift: `Frutiger, sans-serif`
 - `src/components/so-header.ts` – `<so-header>` Web Component (Shadow DOM)
-- `src/components/so-breadcrump.ts` – `<so-breadcrump>` Web Component (Shadow DOM)
+- `src/components/so-breadcrumb.ts` – `<so-breadcrumb>` Web Component (Shadow DOM)
 - `src/demo/index.html` – Demo-Seite
 - `tests/so-header.test.ts` – Tests (Jest + JSDOM)
-- `tests/so-breadcrump.test.ts` – Tests (Jest + JSDOM)
+- `tests/so-breadcrumb.test.ts` – Tests (Jest + JSDOM)
 
 ## Voraussetzungen
 
@@ -94,7 +94,7 @@ Dann im Browser öffnen:
 <script type="module" src="/dist/index.js"></script>
 
 <so-header></so-header>
-<so-breadcrump></so-breadcrump>
+<so-breadcrumb></so-breadcrumb>
 ```
 
 ### 3) Navigation konfigurieren (optional)
@@ -134,24 +134,24 @@ Dann im Browser öffnen:
 - `so-section-select` → wird ausgelöst, wenn ein Bereich (Services/Verwaltung) geklickt wird  
   `detail: { label, href }`
 
-### `<so-breadcrump>`
-
-**Attribute**
-
-- `items`: JSON-Array aus Objekten `{ label, href }`  
-  - letzter Eintrag wird als aktueller Pfad dargestellt (rot)
+### `<so-breadcrumb>`
 
 **Beispiel**
 
 ```html
-<so-breadcrump
-  items='[{"label":"so.ch","href":"https://so.ch"},{"label":"Verwaltung","href":"https://so.ch/verwaltung/"},{"label":"Bau- und Justizdepartement","href":"https://so.ch/verwaltung/bau-und-justizdepartement/"},{"label":"Amt für Geoinformation","href":"https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/"}]'
-></so-breadcrump>
+<so-breadcrumb>
+  <so-breadcrumb-item href="https://so.ch">so.ch</so-breadcrumb-item>
+  <so-breadcrumb-item href="https://so.ch/verwaltung/">Verwaltung</so-breadcrumb-item>
+  <so-breadcrumb-item href="https://so.ch/verwaltung/bau-und-justizdepartement/">Bau- und Justizdepartement</so-breadcrumb-item>
+  <so-breadcrumb-item href="https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/" isCurrentPage>
+    Amt für Geoinformation
+  </so-breadcrumb-item>
+</so-breadcrumb>
 ```
 
 **Custom Properties**
 
-- `--so-breadcrump-padding`: Padding (Default `24px`)
+- `--so-breadcrumb-padding`: Padding (Default `24px`)
 
 ## Customizing
 
