@@ -1,36 +1,12 @@
-type BreadcrumpItem = { label: string; href: string };
-
-const DEFAULT_ITEMS: BreadcrumpItem[] = [
-  { label: "so.ch", href: "https://so.ch" },
-  { label: "Verwaltung", href: "https://so.ch/verwaltung/" },
-  { label: "Bau- und Justizdepartement", href: "https://so.ch/verwaltung/bau-und-justizdepartement/" },
-  { label: "Amt für Geoinformation", href: "https://so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/" }
-];
+type BreadcrumbItemData = {
+  label: string;
+  href: string | null;
+  isCurrentPage: boolean;
+};
 
 const CHEVRON_SVG = `<svg class="chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
   <path d="m15.53 11.47-6-6c-.29-.29-.77-.29-1.06 0s-.29.77 0 1.06L13.94 12l-5.47 5.47c-.29.29-.29.77 0 1.06.15.15.34.22.53.22s.38-.07.53-.22l6-6c.29-.29.29-.77 0-1.06Z"/>
 </svg>`;
-
-function safeParseItems(json: string | null, fallback: BreadcrumpItem[]): BreadcrumpItem[] {
-  if (!json) return fallback;
-  try {
-    const v = JSON.parse(json) as unknown;
-    if (!Array.isArray(v)) return fallback;
-    const items: BreadcrumpItem[] = [];
-    for (const it of v) {
-      if (!it || typeof it !== "object") continue;
-      const record = it as Record<string, unknown>;
-      const label = record["label"];
-      const href = record["href"];
-      if (typeof label === "string" && typeof href === "string") {
-        items.push({ label, href });
-      }
-    }
-    return items.length ? items : fallback;
-  } catch {
-    return fallback;
-  }
-}
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string): HTMLElementTagNameMap[K] {
   const n = document.createElement(tag);
@@ -38,26 +14,57 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string): HTMLEl
   return n;
 }
 
-export class SoBreadcrump extends HTMLElement {
-  static observedAttributes = ["items"];
+function isCurrentPageAttribute(el: Element): boolean {
+  return el.hasAttribute("iscurrentpage") || el.hasAttribute("isCurrentPage");
+}
 
+export class SoBreadcrumbItem extends HTMLElement {}
+
+export class SoBreadcrumb extends HTMLElement {
   private root: ShadowRoot;
-  private items: BreadcrumpItem[] = DEFAULT_ITEMS;
+  private observer: MutationObserver | null = null;
 
   constructor() {
     super();
     this.root = this.attachShadow({ mode: "open" });
-    this.updateFromAttributes();
-    this.render();
   }
 
-  attributeChangedCallback(): void {
-    this.updateFromAttributes();
+  connectedCallback(): void {
     this.render();
+    this.observer = new MutationObserver(() => this.render());
+    this.observer.observe(this, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      characterData: true
+    });
   }
 
-  private updateFromAttributes(): void {
-    this.items = safeParseItems(this.getAttribute("items"), DEFAULT_ITEMS);
+  disconnectedCallback(): void {
+    this.observer?.disconnect();
+    this.observer = null;
+  }
+
+  private getItems(): BreadcrumbItemData[] {
+    const nodes = Array.from(this.querySelectorAll("so-breadcrumb-item"));
+    const items = nodes
+      .map((node) => {
+        const label = (node.textContent ?? "").trim();
+        return {
+          label,
+          href: node.getAttribute("href"),
+          isCurrentPage: isCurrentPageAttribute(node)
+        };
+      })
+      .filter((item) => item.label.length > 0);
+
+    if (!items.length) return [];
+
+    if (!items.some((item) => item.isCurrentPage)) {
+      items[items.length - 1].isCurrentPage = true;
+    }
+
+    return items;
   }
 
   private render(): void {
@@ -67,22 +74,31 @@ export class SoBreadcrump extends HTMLElement {
     styleEl.textContent = this.styles();
     this.root.appendChild(styleEl);
 
-    const wrapper = el("nav", "so-breadcrump");
+    const wrapper = el("nav", "so-breadcrumb");
     wrapper.setAttribute("aria-label", "Breadcrumb");
 
-    const container = el("div", "so-breadcrump-container");
+    const container = el("div", "so-breadcrumb-container");
     const list = el("ol", "list");
 
-    this.items.forEach((item, index) => {
-      const isLast = index === this.items.length - 1;
+    const items = this.getItems();
+    items.forEach((item, index) => {
+      const isLast = index === items.length - 1;
       const li = el("li", "item");
-      if (isLast) li.classList.add("current");
+      if (item.isCurrentPage) li.classList.add("current");
 
-      const labelEl = el("a") as HTMLAnchorElement;
-      labelEl.href = item.href;
-      labelEl.textContent = item.label;
-
-      li.appendChild(labelEl);
+      if (item.isCurrentPage || !item.href) {
+        const labelEl = el("span", "label");
+        labelEl.textContent = item.label;
+        if (item.isCurrentPage) {
+          labelEl.setAttribute("aria-current", "page");
+        }
+        li.appendChild(labelEl);
+      } else {
+        const labelEl = el("a") as HTMLAnchorElement;
+        labelEl.href = item.href;
+        labelEl.textContent = item.label;
+        li.appendChild(labelEl);
+      }
 
       if (!isLast) {
         li.insertAdjacentHTML("beforeend", CHEVRON_SVG);
@@ -104,14 +120,14 @@ export class SoBreadcrump extends HTMLElement {
         font-family: var(--so-font-family, Frutiger, sans-serif);
       }
 
-      .so-breadcrump{
+      .so-breadcrumb{
         width: 100%;
         color: var(--so-fg, rgb(47, 72, 88));
       }
 
-      .so-breadcrump-container{
+      .so-breadcrumb-container{
         width: 100%;
-        padding: var(--so-breadcrump-padding, 24px);
+        padding: var(--so-breadcrumb-padding, 24px);
       }
 
       .list{
@@ -133,7 +149,8 @@ export class SoBreadcrump extends HTMLElement {
         color: inherit;
       }
 
-      .item a{
+      .item a,
+      .item .label{
         color: inherit;
         text-decoration: none;
         line-height: 1;
@@ -146,6 +163,7 @@ export class SoBreadcrump extends HTMLElement {
       }
 
       .item.current,
+      .item.current .label,
       .item.current a{
         color: #e01f26;
       }
