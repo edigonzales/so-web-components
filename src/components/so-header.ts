@@ -275,12 +275,12 @@ export class SoHeader extends HTMLElement {
       .so-header-container{
         width: 100%;
         margin-inline: auto;
+        padding-top: var(--so-container-padding, var(--so-space-6, 1.5rem));
         padding-inline: var(--so-container-padding, var(--so-space-6, 1.5rem));
         box-sizing: border-box;
       }
 
       .topbar-inner{
-        height: var(--so-header-height, 4.25rem);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -293,7 +293,9 @@ export class SoHeader extends HTMLElement {
         text-decoration: none;
       }
       .logo svg#logo{
-        width: 10.7rem; /* close to screenshot */
+        width: 10.125rem;
+        height: 1rem;
+        /*width: 10.7rem;*/ /* close to screenshot */
         height: auto;
         display: block;
       }
@@ -363,12 +365,14 @@ export class SoHeader extends HTMLElement {
         width: 100%;
         /*margin-block: 0.4rem;*/
       }
+
       .sectionnav ul{
         list-style: none;
         display: flex;
         gap: 1.5rem;
         margin: 0;
         padding: 0;
+        padding-top: var(--so-space-2, 0.5rem);
         align-items: baseline;
         /*border-bottom: 1px solid rgba(0,0,0,0.08);*/
       }
@@ -411,9 +415,6 @@ export class SoHeader extends HTMLElement {
         }
         .mobile-panel-inner[data-open="false"]{ display: none; }
       }
-
-      
-
 
       .mobile-group{ margin-top: 0.75rem; }
       .mobile-title{ font-weight: 900; margin-bottom: 0.5rem; }
