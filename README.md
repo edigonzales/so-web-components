@@ -47,6 +47,48 @@ Outputs:
 npm test
 ```
 
+## Publish (npm)
+
+### Voraussetzungen
+
+- npm Account
+- **Automation Token** (Classic Tokens werden nicht mehr akzeptiert)
+- GitHub Secret `NPM_TOKEN` im Repo hinterlegen (Automation Token)
+
+> Optional: Alternativ kannst du **npm Trusted Publishing (OIDC)** aktivieren und dann ohne Token veröffentlichen.
+
+### Ablauf
+
+1) Änderungen auf `main` pushen (CI läuft).
+2) Version taggen (Semver) und Tag pushen → Publish-Workflow lädt auf npm.
+
+```bash
+git tag v0.1.1
+git push origin v0.1.1
+```
+
+## CDN Nutzung (nach npm Publish)
+
+Nach dem Publish sind die Web Components z.B. über **unpkg** oder **jsDelivr** verfügbar:
+
+```html
+<script type="module" src="https://unpkg.com/so-web-components@0.1.1/dist/index.js"></script>
+```
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/index.js"></script>
+```
+
+Optional ohne Versions-Pin:
+
+```html
+<script type="module" src="https://unpkg.com/so-web-components/dist/index.js"></script>
+```
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/so-web-components/dist/index.js"></script>
+```
+
 ## Dev / Demo starten
 
 ### Live Reload (empfohlen)
