@@ -1,6 +1,14 @@
 {
   "name": "so-web-components",
-  "version": "0.1.4",
+  "version": "0.1.5",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edigonzales/so-web-components.git"
+  },  
+  "homepage": "https://github.com/edigonzales/so-web-components#readme",  
+  "bugs": {
+    "url": "https://github.com/edigonzales/so-web-components/issues"
+  },  
   "private": false,
   "type": "module",
   "description": "Vanilla TypeScript Web Components inspired by so.ch layout (tokens + header component).",
