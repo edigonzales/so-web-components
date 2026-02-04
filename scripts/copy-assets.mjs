@@ -5,7 +5,8 @@ const pairs = [
   ["src/styles/tokens.css", "dist/styles/tokens.css"],
   ["src/styles/reset.css", "dist/styles/reset.css"],
   ["src/styles/fonts.css", "dist/styles/fonts.css"],
-  ["src/demo/index.html", "dist/demo/index.html"]
+  ["src/demo/index.html", "dist/demo/index.html"],
+  ["src/demo/cdn-demo.html", "dist/demo/cdn-demo.html"]
 ];
 
 for (const [src, dest] of pairs) {

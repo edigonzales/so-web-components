@@ -12,6 +12,7 @@ abgeleitet aus dem Layout-Prinzip von so.ch.
 - `src/components/so-header.ts` – `<so-header>` Web Component (Shadow DOM)
 - `src/components/so-breadcrumb.ts` – `<so-breadcrumb>` Web Component (Shadow DOM)
 - `src/demo/index.html` – Demo-Seite
+- `src/demo/cdn-demo.html` – einfache CDN-Demo-Seite
 - `tests/so-header.test.ts` – Tests (Jest + JSDOM)
 - `tests/so-breadcrumb.test.ts` – Tests (Jest + JSDOM)
 
@@ -39,7 +40,9 @@ Outputs:
 - `dist/components/...`
 - `dist/styles/tokens.css`
 - `dist/styles/reset.css`
+- `dist/styles/fonts.css`
 - `dist/demo/index.html`
+- `dist/demo/cdn-demo.html`
 
 ## Tests
 
@@ -88,6 +91,43 @@ Optional ohne Versions-Pin:
 ```html
 <script type="module" src="https://cdn.jsdelivr.net/npm/so-web-components/dist/index.js"></script>
 ```
+
+### Einfache Test-Webseite via CDN (Version `0.1.1`)
+
+Eine fertige Beispielseite liegt unter `src/demo/cdn-demo.html` (wird nach `dist/demo/cdn-demo.html` kopiert):
+
+```html
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>so-web-components CDN Demo</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/styles/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/styles/fonts.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/styles/tokens.css" />
+  <script type="module" src="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/index.js"></script>
+</head>
+<body>
+  <so-header
+    active-section="Verwaltung"
+    site-name="Kanton Solothurn">
+  </so-header>
+  <so-breadcrumb>
+    <so-breadcrumb-item href="/">Startseite</so-breadcrumb-item>
+    <so-breadcrumb-item href="/beispiele">Beispiele</so-breadcrumb-item>
+    <so-breadcrumb-item isCurrentPage>CDN Demo</so-breadcrumb-item>
+  </so-breadcrumb>
+</body>
+</html>
+```
+
+Hinweis zu Fonts:
+
+- Die Schrift wird **nicht** automatisch durch `index.js` nachgeladen.
+- `dist/styles/fonts.css` muss explizit eingebunden werden (lokal oder via CDN).
+- In `fonts.css` ist die Frutiger-Webfont als `@font-face` enthalten.
 
 ## Dev / Demo starten
 
@@ -145,7 +185,7 @@ Dann im Browser öffnen:
 
 ```html
 <so-header
-  top-nav='[{"label":"Regierung","href":"/regierung"},{"label":"Gerichte","href":"/gerichte"}]'
+  top-nav='[{"label":"Regierung","href":"https://so.ch/regierung/"},{"label":"Gerichte","href":"https://so.ch/gerichte/"}]'
   section-nav='[{"label":"Services","href":"/services"},{"label":"Verwaltung","href":"/verwaltung"}]'
   active-section="Services"
   logo-href="/"
@@ -210,7 +250,7 @@ Einfach per CSS Custom Properties:
 }
 ```
 
-> Hinweis: **Frutiger** muss auf dem System vorhanden sein (oder du bindest eine Webfont ein).
+> Hinweis: Wenn du `styles/fonts.css` einbindest, wird Frutiger als Webfont geladen.
 
 ## Lizenz
 

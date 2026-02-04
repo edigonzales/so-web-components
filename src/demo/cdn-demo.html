@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>so-web-components CDN Demo</title>
+
+  <!-- Basis-Styles und Fonts von CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/styles/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/styles/fonts.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/styles/tokens.css" />
+
+  <!-- Web Components von CDN -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/index.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      background: var(--so-bg);
+      color: var(--so-fg);
+      font-family: var(--so-font-family);
+    }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 1.5rem;
+    }
+
+    p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <so-header></so-header>
+
+  <so-breadcrumb>
+    <so-breadcrumb-item href="/">Startseite</so-breadcrumb-item>
+    <so-breadcrumb-item href="/beispiele">Beispiele</so-breadcrumb-item>
+    <so-breadcrumb-item isCurrentPage>CDN Demo</so-breadcrumb-item>
+  </so-breadcrumb>
+
+  <main>
+    <h1>Demo-Seite für einfache Webseiten</h1>
+    <p>Diese Seite lädt <code>so-header</code> und <code>so-breadcrumb</code> direkt aus dem CDN.</p>
+  </main>
+</body>
+</html>

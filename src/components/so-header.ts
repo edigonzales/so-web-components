@@ -1,16 +1,16 @@
 type NavItem = { label: string; href: string };
 
 const DEFAULT_TOP_NAV: NavItem[] = [
-  { label: "Regierung", href: "#" },
-  { label: "Gerichte", href: "#" },
-  { label: "Parlament", href: "#" },
-  { label: "Karriere", href: "#" },
-  { label: "my.so.ch", href: "#" }
+  { label: "Regierung", href: "https://so.ch/regierung/" },
+  { label: "Gerichte", href: "https://so.ch/gerichte/" },
+  { label: "Parlament", href: "https://so.ch/parlament/" },
+  { label: "Karriere", href: "https://karriere.so.ch/" },
+  { label: "my.so.ch", href: "https://my.so.ch/" }
 ];
 
 const DEFAULT_SECTION_NAV: NavItem[] = [
-  { label: "Services", href: "#" },
-  { label: "Verwaltung", href: "#" }
+  { label: "Services", href: "https://so.ch/services/" },
+  { label: "Verwaltung", href: "https://so.ch/verwaltung/" }
 ];
 
 function safeParseNav(json: string | null, fallback: NavItem[]): NavItem[] {
@@ -94,7 +94,7 @@ export class SoHeader extends HTMLElement {
   private topNav: NavItem[] = DEFAULT_TOP_NAV;
   private sectionNav: NavItem[] = DEFAULT_SECTION_NAV;
   private activeSection = "Services";
-  private logoHref = "/";
+  private logoHref = "https://so.ch";
   private siteName = "Kanton Solothurn";
 
   constructor() {
