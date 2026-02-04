@@ -1,6 +1,6 @@
 {
   "name": "so-web-components",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": false,
   "type": "module",
   "description": "Vanilla TypeScript Web Components inspired by so.ch layout (tokens + header component).",
