@@ -126,7 +126,6 @@ export class SoBreadcrumb extends HTMLElement {
       }
 
       .so-breadcrumb-container{
-        width: 100%;
         padding: var(--so-breadcrumb-padding, 24px);
       }
 
