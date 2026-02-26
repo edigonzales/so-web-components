@@ -12,7 +12,15 @@
     body{ background: var(--so-bg); color: var(--so-fg); font-family: var(--so-font-family); }
     main{ padding: 2rem 0; }
     .so-container{ max-width: var(--so-container-size-full); margin-inline:auto; padding-inline: var(--so-container-padding); }
+    .so-page-title {
+      margin: 0;
+      font-size: 2.25rem;
+      line-height: 1.15;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
     .hero{
+      margin-top: 2rem;
       height: 260px;
       border-radius: 12px;
       background: linear-gradient(135deg, rgba(0,0,0,0.08), rgba(0,0,0,0.02));
@@ -38,6 +46,11 @@
 
   <main>
     <div class="so-container">
+      <h1 class="so-page-title">Kartenkatalog</h1>
+      <so-lead-text>
+        <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Nisi donec vulputate posuere auctor dictum ante. Eu convallis mi consequat per sollicitudin vestibulum odio ut maximus. Maecenas tellus sodales eget nunc volutpat nam integer?</p>
+        <p>Ad diam tristique netus conubia dui maecenas pretium aenean. Ridiculus <a href="https://www.cogeo.org/" target="_blank" rel="noopener noreferrer">Cloud Optimized GeoTIFF</a> dictum ligula pretium, ridiculus maecenas tortor.</p>
+      </so-lead-text>
       <div class="hero">Willkommen beim Kanton Solothurn</div>
     </div>
   </main>

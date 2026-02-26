@@ -6,12 +6,12 @@
   <title>so-web-components CDN Demo</title>
 
   <!-- Basis-Styles und Fonts von CDN -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/styles/reset.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/styles/fonts.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/styles/tokens.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@latest/dist/styles/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@latest/dist/styles/fonts.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@latest/dist/styles/tokens.css" />
 
   <!-- Web Components von CDN -->
-  <script type="module" src="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/index.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/so-web-components@latest/dist/index.js"></script>
 
   <style>
     body {
@@ -22,18 +22,17 @@
     }
 
     main {
-      max-width: 960px;
+      max-width: 1040px;
       margin: 0 auto;
       padding: 24px;
     }
 
-    h1 {
-      margin: 0 0 12px;
-      font-size: 1.5rem;
-    }
-
-    p {
+    .so-page-title {
       margin: 0;
+      font-size: 2.25rem;
+      line-height: 1.15;
+      font-weight: 900;
+      letter-spacing: 0;
     }
   </style>
 </head>
@@ -47,8 +46,11 @@
   </so-breadcrumb>
 
   <main>
-    <h1>Demo-Seite für einfache Webseiten</h1>
-    <p>Diese Seite lädt <code>so-header</code> und <code>so-breadcrumb</code> direkt aus dem CDN.</p>
+    <h1 class="so-page-title">Kartenkatalog</h1>
+    <so-lead-text>
+      <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Nisi donec vulputate posuere auctor dictum ante. Eu convallis mi consequat per sollicitudin vestibulum odio ut maximus. Maecenas tellus sodales eget nunc volutpat nam integer?</p>
+      <p>Ad diam tristique netus conubia dui maecenas pretium aenean. Ridiculus <a href="https://www.cogeo.org/" target="_blank" rel="noopener noreferrer">Cloud Optimized GeoTIFF</a> dictum ligula pretium, ridiculus maecenas tortor.</p>
+    </so-lead-text>
   </main>
 </body>
 </html>
