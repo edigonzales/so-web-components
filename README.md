@@ -11,10 +11,12 @@ abgeleitet aus dem Layout-Prinzip von so.ch.
   - Schrift: `Frutiger, sans-serif`
 - `src/components/so-header.ts` – `<so-header>` Web Component (Shadow DOM)
 - `src/components/so-breadcrumb.ts` – `<so-breadcrumb>` Web Component (Shadow DOM)
+- `src/components/so-lead-text.ts` – `<so-lead-text>` Web Component für Intro-/Lead-Absätze
 - `src/demo/index.html` – Demo-Seite
 - `src/demo/cdn-demo.html` – einfache CDN-Demo-Seite
 - `tests/so-header.test.ts` – Tests (Jest + JSDOM)
 - `tests/so-breadcrumb.test.ts` – Tests (Jest + JSDOM)
+- `tests/so-lead-text.test.ts` – Tests (Jest + JSDOM)
 
 ## Voraussetzungen
 
@@ -75,11 +77,11 @@ git push origin v0.1.1
 Nach dem Publish sind die Web Components z.B. über **unpkg** oder **jsDelivr** verfügbar:
 
 ```html
-<script type="module" src="https://unpkg.com/so-web-components@0.1.1/dist/index.js"></script>
+<script type="module" src="https://unpkg.com/so-web-components@latest/dist/index.js"></script>
 ```
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/index.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/so-web-components@latest/dist/index.js"></script>
 ```
 
 Optional ohne Versions-Pin:
@@ -92,7 +94,11 @@ Optional ohne Versions-Pin:
 <script type="module" src="https://cdn.jsdelivr.net/npm/so-web-components/dist/index.js"></script>
 ```
 
-### Einfache Test-Webseite via CDN (Version `0.1.1`)
+Hinweis:
+- `@latest` ist möglich und lädt die aktuellste veröffentlichte Version.
+- Für stabile Produktion empfiehlt sich trotzdem ein expliziter Versions-Pin (z.B. `@0.1.8`).
+
+### Einfache Test-Webseite via CDN (Version `latest`)
 
 Eine fertige Beispielseite liegt unter `src/demo/cdn-demo.html` (wird nach `dist/demo/cdn-demo.html` kopiert):
 
@@ -104,10 +110,10 @@ Eine fertige Beispielseite liegt unter `src/demo/cdn-demo.html` (wird nach `dist
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>so-web-components CDN Demo</title>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/styles/reset.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/styles/fonts.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/styles/tokens.css" />
-  <script type="module" src="https://cdn.jsdelivr.net/npm/so-web-components@0.1.1/dist/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@latest/dist/styles/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@latest/dist/styles/fonts.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/so-web-components@latest/dist/styles/tokens.css" />
+  <script type="module" src="https://cdn.jsdelivr.net/npm/so-web-components@latest/dist/index.js"></script>
 </head>
 <body>
   <so-header
@@ -177,6 +183,9 @@ Dann im Browser öffnen:
 
 <so-header></so-header>
 <so-breadcrumb></so-breadcrumb>
+<so-lead-text>
+  <p>Ein kurzer Leadtext mit <a href="#">Link</a>.</p>
+</so-lead-text>
 ```
 
 ### 3) Navigation konfigurieren (optional)
@@ -255,3 +264,32 @@ Einfach per CSS Custom Properties:
 ## Lizenz
 
 MIT (für dieses Beispielprojekt).
+
+
+### `<so-lead-text>`
+
+Für grössere Intro-Absätze unter einer Seitentitel-Zeile.
+
+**Beispiel**
+
+```html
+<h1 class="so-page-title">Kartenkatalog</h1>
+<so-lead-text>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <p>Mit <a href="https://www.cogeo.org/">einem Link</a> im Text.</p>
+</so-lead-text>
+```
+
+**Custom Properties**
+
+- `--so-lead-text-margin-top` (Default `24px`)
+- `--so-lead-text-font-size` (Default `1.125rem`)
+- `--so-lead-text-line-height` (Default `1.55`)
+
+### Standard-Linkstyling in `tokens.css`
+
+Ja, das passt gut in `tokens.css` für den globalen Fallback ausserhalb von Shadow-DOM-Komponenten.
+
+- Links sind standardmässig unterstrichen.
+- Hover/Focus rendert rot (`#e01f26`).
+- Übersteuerbar via CSS-Variablen `--so-link-color` und `--so-link-hover-color`.
