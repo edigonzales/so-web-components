@@ -98,7 +98,7 @@ Optional ohne Versions-Pin:
 
 Hinweis:
 - `@latest` ist möglich und lädt die aktuellste veröffentlichte Version.
-- Für stabile Produktion empfiehlt sich trotzdem ein expliziter Versions-Pin (z.B. `@0.1.8`).
+- Für stabile Produktion empfiehlt sich trotzdem ein expliziter Versions-Pin (z.B. `@0.1.10`).
 
 ### Einfache Test-Webseite via CDN (Version `latest`)
 
