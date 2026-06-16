@@ -43,6 +43,8 @@ Outputs:
 - `dist/styles/tokens.css`
 - `dist/styles/reset.css`
 - `dist/styles/fonts.css`
+- `dist/styles/FrutigerLTW05-55Roman.woff2`
+- `dist/styles/FrutigerLTW05-75Black.woff2`
 - `dist/demo/index.html`
 - `dist/demo/cdn-demo.html`
 
@@ -133,7 +135,7 @@ Hinweis zu Fonts:
 
 - Die Schrift wird **nicht** automatisch durch `index.js` nachgeladen.
 - `dist/styles/fonts.css` muss explizit eingebunden werden (lokal oder via CDN).
-- In `fonts.css` ist die Frutiger-Webfont als `@font-face` enthalten.
+- `fonts.css` referenziert die mitgelieferten `woff2`-Dateien aus `dist/styles/`.
 
 ## Dev / Demo starten
 
@@ -259,7 +261,7 @@ Einfach per CSS Custom Properties:
 }
 ```
 
-> Hinweis: Wenn du `styles/fonts.css` einbindest, wird Frutiger als Webfont geladen.
+> Hinweis: Wenn du `styles/fonts.css` einbindest, wird Frutiger über die mitgelieferten `woff2`-Dateien aus `styles/` geladen.
 
 ## Lizenz
 
